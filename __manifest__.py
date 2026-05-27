@@ -9,7 +9,7 @@ permite editar la cantidad por línea. Este módulo hace que esas cantidades
 editadas sean respetadas por todos los formatos de etiqueta, incluyendo
 Pantum 50x25.
     """,
-    'depends': ['stock_voucher', 'label_pantum_50x25'],
+    'depends': ['stock_voucher'],
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
