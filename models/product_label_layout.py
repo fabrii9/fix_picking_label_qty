@@ -1,5 +1,5 @@
 from collections import defaultdict
-from odoo import models
+from odoo import api, models
 
 
 class ProductLabelLayout(models.TransientModel):
@@ -16,3 +16,12 @@ class ProductLabelLayout(models.TransientModel):
                 quantities[line.move_id.product_id.id] += int(line.move_quantity)
             data['quantity_by_product'] = dict(quantities)
         return xml_id, data
+
+
+class StockPickingZplLines(models.TransientModel):
+    _inherit = 'stock.picking.zpl.lines'
+
+    @api.constrains('move_quantity')
+    def _check_move_quantity(self):
+        # Se elimina la restricción que impide poner cantidades mayores a la original
+        pass
