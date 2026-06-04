@@ -10,6 +10,9 @@ editadas sean respetadas por todos los formatos de etiqueta, incluyendo
 Pantum 50x25.
     """,
     'depends': ['stock_voucher'],
+    'data': [
+        'views/product_label_layout_views.xml',
+    ],
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
