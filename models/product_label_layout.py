@@ -8,7 +8,7 @@ class ProductLabelLayout(models.TransientModel):
     def _prepare_report_data(self):
         xml_id, data = super()._prepare_report_data()
         # Si venimos de un picking y hay líneas editables, usamos esas cantidades
-        if self.picking_id and self.line_ids:
+        if self.line_ids:
             quantities = defaultdict(int)
             for line in self.line_ids:
                 if line.move_quantity <= 0:
