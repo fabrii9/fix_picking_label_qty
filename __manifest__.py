@@ -11,6 +11,7 @@ Pantum 50x25.
     """,
     'depends': ['stock_voucher'],
     'data': [
+        'security/ir.model.access.csv',
         'views/product_label_layout_views.xml',
     ],
     'installable': True,
