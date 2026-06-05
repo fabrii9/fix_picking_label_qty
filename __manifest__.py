@@ -6,12 +6,10 @@
     'description': """
 Cuando se imprimen etiquetas de productos desde un picking/recepción, el wizard
 permite editar la cantidad por línea. Este módulo hace que esas cantidades
-editadas sean respetadas por todos los formatos de etiqueta, incluyendo
-Pantum 50x25.
+editadas sean respetadas por todos los formatos de etiqueta.
     """,
     'depends': ['stock_voucher'],
     'data': [
-        'security/ir.model.access.csv',
         'views/product_label_layout_views.xml',
     ],
     'installable': True,
