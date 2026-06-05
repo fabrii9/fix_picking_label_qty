@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Archivamos la vista vieja de productos que ya no existe en el modelo -->
-    <record id="view_product_label_layout_form_product_fix" model="ir.ui.view">
-        <field name="active">False</field>
-    </record>
-
     <!-- Archivamos la vista original de stock_voucher para evitar duplicados,
          porque hereda de product.product_label_layout_form y no siempre se
          aplica correctamente sobre la vista primary del picking. -->
