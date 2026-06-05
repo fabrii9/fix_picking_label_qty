@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Archivamos la vista original de stock_voucher para evitar duplicados,
+         porque hereda de product.product_label_layout_form y no siempre se
+         aplica correctamente sobre la vista primary del picking. -->
+    <record id="stock_voucher.view_picking_zpl_nuevo" model="ir.ui.view">
+        <field name="active">False</field>
+    </record>
+
+    <!-- Nueva vista que hereda directamente de la vista primary del picking.
+         Usa <list> sin widget forzado para asegurar que sea editable inline. -->
     <record id="view_picking_label_layout_form_picking_fix" model="ir.ui.view">
         <field name="name">product.label.layout.form.picking.fix</field>
         <field name="model">product.label.layout</field>
         <field name="inherit_id" ref="stock.product_label_layout_form_picking"/>
+        <field name="priority">99</field>
         <field name="arch" type="xml">
             <xpath expr="//group" position="before">
                 <group invisible="context.get('active_model') != 'stock.picking'">
                     <field name="picking_id" string="Transferencia" readonly="1" invisible="1"/>
-                    <field name="line_ids" widget="one2many_list" nolabel="1" colspan="2">
+                    <field name="line_ids" nolabel="1" colspan="2">
                         <list editable="top" create="false" delete="false">
                             <field name="move_id" column_invisible="True"/>
                             <field name="name" string="Producto"/>
-                            <field name="move_quantity" string="Cantidad a imprimir" readonly="0"/>
+                            <field name="move_quantity" string="Cantidad a imprimir"/>
                             <field name="move_uom_id" string="Unidad" readonly="1"/>
                         </list>
                     </field>
