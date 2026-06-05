@@ -7,22 +7,28 @@ class ProductLabelLayout(models.TransientModel):
 
     line_product_ids = fields.One2many('product.label.layout.line', 'wizard_id', string='Products')
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        records = super().create(vals_list)
-        for rec in records:
-            if not rec.line_product_ids and not rec.line_ids:
-                if rec.product_ids:
-                    rec.line_product_ids = [
-                        Command.create({'product_id': p.id, 'quantity': 1})
-                        for p in rec.product_ids
-                    ]
-                elif rec.product_tmpl_ids:
-                    rec.line_product_ids = [
-                        Command.create({'product_id': p.id, 'quantity': 1})
-                        for p in rec.product_tmpl_ids.mapped('product_variant_ids')
-                    ]
-        return records
+    @api.model
+    def default_get(self, default_fields):
+        rec = super().default_get(default_fields)
+        # Si venimos de productos (la accion pasa default_product_ids o default_product_tmpl_ids)
+        if not rec.get('line_product_ids') and not rec.get('line_ids'):
+            product_ids = self._context.get('default_product_ids') or []
+            product_tmpl_ids = self._context.get('default_product_tmpl_ids') or []
+
+            if product_ids:
+                products = self.env['product.product'].browse(product_ids).exists()
+                rec['line_product_ids'] = [
+                    (0, 0, {'product_id': p.id, 'quantity': 1})
+                    for p in products
+                ]
+            elif product_tmpl_ids:
+                templates = self.env['product.template'].browse(product_tmpl_ids).exists()
+                variants = templates.mapped('product_variant_ids').exists()
+                rec['line_product_ids'] = [
+                    (0, 0, {'product_id': p.id, 'quantity': 1})
+                    for p in variants
+                ]
+        return rec
 
     def _prepare_report_data(self):
         xml_id, data = super()._prepare_report_data()
